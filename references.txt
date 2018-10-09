@@ -1,0 +1,9 @@
+https://askubuntu.com/questions/48129/how-to-create-a-restricted-ssh-user-for-port-forwarding
+https://unix.stackexchange.com/questions/215986/ssh-login-with-a-tunnel-through-intermediate-server-in-a-single-command
+https://serverfault.com/questions/555516/setup-public-key-authorized-ssh-for-non-root-users
+https://unix.stackexchange.com/questions/205842/unable-to-login-with-ssh-rsa-key
+https://www.howtoforge.com/reverse-ssh-tunneling
+https://serverfault.com/questions/337274/ssh-from-a-through-b-to-c-using-private-key-on-b
+
+
+https://gist.github.com/smoser/3e9430c51e23e0c0d16c359a2ca668ae
