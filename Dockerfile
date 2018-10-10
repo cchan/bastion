@@ -2,7 +2,7 @@ FROM alpine
 
 RUN apk add \
   openssh \
-  libqrencode \
+  libqrencode \ # libqrencode-dev doesn't work either
   google-authenticator \
   openssh-server-pam
   #mosh-server

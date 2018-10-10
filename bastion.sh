@@ -7,9 +7,10 @@ set -e
 : ${BASTION_PASSWORD?Need password for bastion}
 : ${HOST_USER?Need username for host}
 
-HOST=host
-CLIENT=client
-REVTUNNEL_PORT=32222
+: ${HOST:=host}
+: ${CLIENT:=client}
+: ${REVTUNNEL_PORT:=32222}
+
 { echo Hello123; echo Hello123; } | adduser $HOST
 mkdir /home/$HOST/.ssh
 sh -c "echo '$PUBKEY_HOST' > /home/$HOST/.ssh/authorized_keys"
@@ -24,7 +25,7 @@ PrintMotd no
 AcceptEnv LANG LC_*
 ClientAliveInterval 120
 UseDNS no
-PasswordAuthentication no
+PermitRootLogin no
 Match User $HOST
    AllowAgentForwarding no
    AllowTcpForwarding yes
@@ -41,7 +42,6 @@ Match User $CLIENT
    GatewayPorts no
    ForceCommand echo This account can only be used for ProxyJump (ssh -J).
 ' > /etc/ssh/sshd_config"
-google-authenticator --time-based --disallow-reuse --force --qr-mode=utf8 --rate-limit=3 --rate-time=60 --window-size=3
 su $CLIENT -c 'google-authenticator --time-based --disallow-reuse --force --qr-mode=utf8 --rate-limit=3 --rate-time=60 --window-size=3'
 sh -c "echo 'auth required pam_google_authenticator.so' >> /etc/pam.d/sshd"
 
