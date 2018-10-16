@@ -26,6 +26,7 @@ AcceptEnv LANG LC_*
 ClientAliveInterval 120
 UseDNS no
 PermitRootLogin no
+AuthenticationMethods publickey,password publickey,keyboard-interactive
 Match User $HOST
    AllowAgentForwarding no
    AllowTcpForwarding yes
@@ -33,14 +34,14 @@ Match User $HOST
    PermitTunnel no
    GatewayPorts no
    PermitOpen localhost:$REVTUNNEL_PORT
-   ForceCommand echo This account can only be used for reverse tunnels (ssh -R).
+   ForceCommand echo \"This account can only be used for reverse tunnels (ssh -R).\"
 Match User $CLIENT
    AllowAgentForwarding no
    AllowTcpForwarding yes
    X11Forwarding no
    PermitTunnel no
    GatewayPorts no
-   ForceCommand echo This account can only be used for ProxyJump (ssh -J).
+   ForceCommand echo \"This account can only be used for ProxyJump (ssh -J).\"
 ' > /etc/ssh/sshd_config"
 su $CLIENT -c 'google-authenticator --time-based --disallow-reuse --force --qr-mode=utf8 --rate-limit=3 --rate-time=60 --window-size=3'
 sh -c "echo 'auth required pam_google_authenticator.so' >> /etc/pam.d/sshd"
@@ -53,7 +54,9 @@ echo "  Host remote"
 echo "  Hostname localhost"
 echo "  Port $REVTUNNEL_PORT"
 echo "  User $HOST_USER"
-echo "  ProxyJump $HOST@$BASTION"
+echo "  ProxyJump $CLIENT@$BASTION"
+echo Alternatively, if you have no ProxyJump option:
+echo "  ProxyCommand ssh -W %h:%p $CLIENT@$BASTION"
 echo
 echo After that, you\'re all set! Now we can have some fun:
 echo Connect from the client:
