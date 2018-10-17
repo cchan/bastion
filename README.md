@@ -15,11 +15,12 @@ docker run -d -p 2222:22 --env-file env.list --name bastion-instance bastion
 
 ## To do this on ubuntu
 - Locally `scp bastion.sh env.list bastion:~`
-- On bastion `sudo apt install libqrencode-dev libpam-google-authenticator mosh python`
+- On bastion `sudo apt update && sudo apt dist-upgrade && sudo apt install libqrencode-dev libpam-google-authenticator mosh python`
 - On bastion `sudo su`
-  - `. env.list` - need to change these to `export`s
-  - `./bastion.sh service ssh restart`
-- On bastion, lock your sudoer account out, for example with `google-authenticator --time-based --disallow-reuse --force --qr-mode=utf8 --rate-limit=3 --rate-time=60 --window-size=3 >/dev/null`
+  - `. env.list`
+  - `. bastion.sh service ssh restart`
+- Test out all the connections suggested in the instructions!
+- Everyone on the server should be now locked out of SSH shell, so keep this shell open if you want it. It's probably good to do a quick check with `who` to check that there's exactly one session (you) and `sudo netstat -tulpna | grep 'ESTABLISHED'` to check that any sshd-related connections are yours.
 
 Notes:
 - GCP disallows root ssh login, and creates an account according to the username field of your ssh key (as long as it's not root).

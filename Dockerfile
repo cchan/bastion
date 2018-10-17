@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk add \
+RUN apk update && apk upgrade -U -a && apk add --no-cache \
   openssh \
   libqrencode  # libqrencode-dev doesn't work either \
   google-authenticator \

@@ -26,27 +26,30 @@ AcceptEnv LANG LC_*
 ClientAliveInterval 120
 UseDNS no
 PermitRootLogin no
-AuthenticationMethods publickey,password publickey,keyboard-interactive
+AuthenticationMethods publickey,keyboard-interactive
+ForceCommand echo \"This account cannot be used.\"
+AllowAgentForwarding no
+AllowTcpForwarding no
+X11Forwarding no
+PermitTunnel no
+GatewayPorts no
 Match User $HOST
-   AllowAgentForwarding no
    AllowTcpForwarding yes
-   X11Forwarding no
-   PermitTunnel no
-   GatewayPorts no
+   AuthenticationMethods publickey
    PermitOpen localhost:$REVTUNNEL_PORT
    ForceCommand echo \"This account can only be used for reverse tunnels (ssh -R).\"
 Match User $CLIENT
-   AllowAgentForwarding no
    AllowTcpForwarding yes
-   X11Forwarding no
-   PermitTunnel no
-   GatewayPorts no
    ForceCommand echo \"This account can only be used for ProxyJump (ssh -J).\"
 ' > /etc/ssh/sshd_config"
 su $CLIENT -c 'google-authenticator --time-based --disallow-reuse --force --qr-mode=utf8 --rate-limit=3 --rate-time=60 --window-size=3'
 sh -c "echo 'auth required pam_google_authenticator.so' >> /etc/pam.d/sshd"
 
 echo All done!
+echo ECDSA key fingerprint:
+ssh-keygen -lf /etc/ssh/ssh_host_ecdsa_key
+echo ED25519 key fingerprint:
+ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key
 echo Now set up the host:
 echo "  tmux new -d autossh -M 0 -NvR $REVTUNNEL_PORT:localhost:22 -o ServerAliveInterval=3000 $HOST@$BASTION"
 echo And set up your client \~/.ssh/config:
