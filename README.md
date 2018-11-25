@@ -14,6 +14,7 @@ docker run -d -p 2222:22 --env-file env.list --name bastion-instance bastion
 ```
 
 ## To do this on ubuntu
+- First go into the GCloud console and check key fingerprints: `for pubkey in /etc/ssh/ssh_host_*_key.pub; do ssh-keygen -lf $pubkey; done`
 - Locally `scp bastion.sh env.list bastion:~`
 - On bastion `sudo apt update && sudo apt dist-upgrade && sudo apt install libqrencode-dev libpam-google-authenticator mosh python`
 - On bastion `sudo su`
