@@ -13,8 +13,10 @@ docker build -t bastion .
 docker run -d -p 2222:22 --env-file env.list --name bastion-instance bastion
 ```
 
-## To do this on ubuntu
-- First go into the GCloud console and check key fingerprints: `for pubkey in /etc/ssh/ssh_host_*_key.pub; do ssh-keygen -lf $pubkey; done`
+## To do this on Debian GNU/Linux 9 on GCP
+- Start an instance, give it appropriate restrictions and firewall and external ip and ssh pubkey etc.
+- Go into the GCP web ssh console and check key fingerprints: `for pubkey in /etc/ssh/ssh_host_*_key.pub; do ssh-keygen -lf $pubkey; done`
+- Go into the GCP web ssh console and check the key fingerprints before connecting from your own computer:
 - Locally `scp bastion.sh env.list bastion:~`
 - On bastion `sudo apt update && sudo apt dist-upgrade && sudo apt install libqrencode-dev libpam-google-authenticator mosh python`
 - On bastion `sudo su`
